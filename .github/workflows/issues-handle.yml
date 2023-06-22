@@ -6,4 +6,4 @@ jobs:
     steps:
       - name: Output Event Details
         # Accessing only events within the github context
-        run: echo "{{ toJSON(github.event) }}"
+        run: echo "${{ toJSON(github.event) }}"
