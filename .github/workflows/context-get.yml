@@ -1,0 +1,9 @@
+name: Output Information
+on: workflow_dispatch
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output Github Context
+        # github is some internal context obj accessed via expression and function toJSON applied
+        run: echo "{{ toJSON(github) }}"
