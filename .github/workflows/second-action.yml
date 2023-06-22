@@ -1,5 +1,7 @@
 name: Test React project
-on: push
+on: 
+  push:
+  workflow_dispatch:
 jobs:
   test:
     # ubuntu-latest runner has Node 16 installed on it. Refer online for softwares that are installed on various runners.
