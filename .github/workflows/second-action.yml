@@ -16,6 +16,14 @@ jobs:
         run: npm ci # Same as npm install. But ci ensures versions same as in package-lock json
       - name: Run tests
         run: npm test
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        # Package dist folder & package.json as a single artifact named dist-files
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
     
   deploy:
       runs-on: ubuntu-latest
