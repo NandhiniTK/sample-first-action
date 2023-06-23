@@ -26,19 +26,16 @@ jobs:
             package.json
     
   deploy:
+      needs: test
       runs-on: ubuntu-latest
       steps:
-      - name: Checkout the code
-        uses: actions/checkout@v3
-      # Adding Install Node step to use a higher version. For each action, lookup online doc for syntax
-      - name: Install Node
-        uses: actions/setup-node@v3
+      - name: Get build artifacts
+        # This action downloads and unzips the contents
+        uses: actions/download-artifact@v3
         with:
-          node-version: '18'
-      - name: Install dependencies
-        run: npm ci # Same as npm install. But ci ensures versions same as in package-lock json
-      - name: Build project
-        run: npm run build
+          name: dist-files
+      - name: Output contents
+        run: ls
       - name: Deploy
         run: echo "Deploying...."
         
