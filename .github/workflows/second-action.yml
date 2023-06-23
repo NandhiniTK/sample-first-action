@@ -4,6 +4,10 @@ jobs:
   test:
     # ubuntu-latest runner has Node 16 installed on it. Refer online for softwares that are installed on various runners.
     runs-on: ubuntu-latest
+    outputs:
+      # script-file is one output
+      # Value = Publish step's outputted github variable script-file
+      script-file: ${{ steps.publish.outputs.script-file }}
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3
@@ -16,6 +20,11 @@ jobs:
         run: npm ci # Same as npm install. But ci ensures versions same as in package-lock json
       - name: Run tests
         run: npm test
+      - name: Publish JS filename
+        id: publish
+        # Below is linux cmd that reads the js file name from the dist/assets/ folder and echoed into script-file var
+        # And written into github output file
+        run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         # Package dist folder & package.json as a single artifact named dist-files
