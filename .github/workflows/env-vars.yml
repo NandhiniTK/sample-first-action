@@ -1,0 +1,45 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+      - dev
+# Env vars at workflow level. Can be accessed by jobs, steps unless the same value is specified there as well
+# Env vars can be at workflow, job, step levels
+env:
+  db_name: xxx
+  
+jobs:
+  test:
+    env:
+      db_username: yyy
+      db_pwd: zzz
+      db_port: 111
+      db_url: vvv
+    environment: testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-deps-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run server
+        run: npm start & npx wait-on http://127.0.0.1:$PORT # This is the syntax to access env var in Ubunutu's shell. Diff for Windows.
+        # To achieve uniformity, specify which Shell to use. Refer doc for that
+      - name: Run tests
+        run: npm test
+      - name: Output information
+        run: |
+          echo "DB Username: ${{ env.db_username }}"
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |        
+          echo "..."
