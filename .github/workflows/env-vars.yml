@@ -12,8 +12,9 @@ env:
 jobs:
   test:
     env:
-      db_username: yyy
-      db_pwd: zzz
+      # db_username, db_pwd using repository level secrets as env variables
+      db_username: ${{ secrets.DB_USERNAME}}
+      db_pwd: ${{ secrets.DB_PWD }}
       db_port: 111
       db_url: vvv
     environment: testing
