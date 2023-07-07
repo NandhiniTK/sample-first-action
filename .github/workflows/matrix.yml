@@ -4,10 +4,20 @@ jobs:
   build:
     continue-on-error: true
     # Define matrix - various combinations needed for deployment
-	strategy:
+    strategy:
       matrix:
 	    node-version: [10,11,12]
-		os: [ubuntu-latest, windows-latest]
+	    os: [ubuntu-latest, windows-latest]
+	    # For standalone combinations
+	    include:
+	    # Runs node 18 only on ubunutu and not on windows
+	    - node-version: 18
+	      os: ubuntu-latest
+	    exclude:
+	    #Exclude combinations
+	    - node-version: 12
+	      os: windows-latest
+	    
     runs-on: ${{ matrix.os }}
     steps:
       - name: Get code
